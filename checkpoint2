@@ -1,132 +1,129 @@
-1.1 
+Exercice 1
 
-les 2 VMs ne sont pas das le meme reseau . le reseau etant en interne il faut donc configurer la VM client afin qu elle soit dans le mm reseau que la VM server pour communiquer 
+1.1
 
-modification dans le panneau de conf du client son IP . attribution d'une IP contenue dans le reseau appartenant à celui du windowserver
+Les deux VM ne sont pas dans le même réseau. Comme le réseau est interne, il faut configurer la VM client pour qu'elle soit dans le même réseau que la VM serveur afin de pouvoir communiquer.
+
+Modification dans le panneau de configuration du client : attribution d'une adresse IP contenue dans le réseau du serveur Windows.
 
 1.2
 
+Test non OK.
+
+Pour réaliser le ping avec le nom d'hôte, j'ai tenté de configurer le DNS en ajoutant un nouvel enregistrement de type A ou AAAA, auquel j'ai ajouté l'adresse IP associée au DNS. Le test via la VM client avec l'IP DNS à savoir 127.0.0.1 fonctionne. Cependant, lors du test de ping avec le nom d'hôte, j'ai un message disant que l'hôte n'a pas pu être trouvé. Il est difficile de déterminer la source du problème de mon côté.
+
+1.3
+
+Modification au niveau de la configuration du réseau Ethernet de la VM Windows client (protocole TCP/IP IPV4), activation du DHCP en automatique. Sur la VM serveur, configuration de l'adresse IP du DHCP dans le même réseau que la plage d'IP définie dans l'outil DHCP.
+
+Test sur VM client non OK, message d'erreur lors de l'exécution de la commande ipconfig /release et ipconfig /renew, impossible d'obtenir automatiquement une adresse IP du DHCP.
+
+1.4
+
+Non, car l'adresse 172.16.10.15 fait partie de la plage d'adresses exclues de la distribution (172.16.10.1 à 172.16.10.19).
+
+Exercice 2 non réalisé.
+
+Exercice 3
+
+3.1
+
+Switch : Rôle - Distribution des adresses IP afin de relier et faire communiquer les PC et le matériel contenu dans les autres réseaux.
+
+3.2
+
+Routeur : Rôle - Le port auquel il est connecté au switch sert de passerelle. Il permet de lire les IPs envoyées par les PCs via le switch pour les router, mais aussi de renvoyer les informations provenant d'Internet vers les PCs.
+
+3.3
+
+Ports du Routeur :
+
+F0/0 (FastEthernet 0/0) : Port auquel on relie un switch à un routeur.
+G1/0 (GigabitEthernet 1/0) : Port auquel on relie un routeur à un autre routeur.
+Ici, 0/0 et 1/0 sont les numéros des ports.
+
+3.4
+
+"16" représente le masque de sous-réseau. La partie invariable du réseau auquel il appartient est celle des 2 premiers octets, soit 10.11.X.X.
+
+3.5
 
 
+3.6
 
+Réseaux des PCs :
 
-
-3.1 
-
-Switch 
-role : distribution des adresses IP afin de relier et faire communiquer les PCs et le materiel contenu dans les autres reseau 
-
-3.2 
-routeur 
-role le port auquel il est connecté au switch sert de passerelle , il permet donc lire les IPs envoyé par les PCs via le switch afin de les router mais egalement de renvoyer les informations provenant d'internet vers les PCs
-
-3.3 
-
-f0/0 , port fastethernet 0/0 : port auquel on relie un switch à un routeur 
-g1/0 , port gigaethernet 1/0 : port auquel on relie un routeur à un autre routeur 
-
-ici 0/0 et 1/0 sont les numero des ports 
-
-3.4 
-
-16 represente le masque de sous reseau , la partie invariable du reseau auquel il appartient est celle des 2 premiers octetsoit  10.11.X.X, 
-
-3.5 
-
-
-c.
-
-3.6 
-
-PC1_ reseau : 10.10.0.0
-PC2_ reseau : 10.11.0.0
-PC5_ reseau : 10.0.0.0
-
+PC1 : 10.10.0.0
+PC2 : 10.11.0.0
+PC5 : 10.0.0.0
 3.7
 
-les PCs pouvant communiquer entre eux sont 
+Les PCs pouvant communiquer entre eux sont PC1, PC3 et PC4.
 
-PC1, PC3 et PC4
+3.8
 
-3.8 
- si l'ip de la passerelle est fixe et reste en 10.10.255.254 , seul les PCs appartenant au reseau 10.10.0.0 à savoir ( PC1 , PC3 ,PC4) communiqueront via la passerelle 
+Si l'IP de la passerelle est fixe et reste en 10.10.255.254, seuls les PCs appartenant au réseau 10.10.0.0, à savoir PC1, PC3 et PC4, communiqueront via la passerelle.
 
 3.9
 
-Aucune , les adresses IP des PC etant configurées sur les PCs et non sur les switch, selon moi il n y aura aucune incidence car les PCs resteront dans le meme reseau , les ports etant identiques , il n y aura donc aucune incidence  
-
+Aucune. Les adresses IP des PC étant configurées sur les PCs et non sur les switchs, selon moi, il n'y aura aucune incidence car les PCs resteront dans le même réseau. Les ports étant identiques, il n'y aura donc aucune incidence.
 
 3.10
 
-conifguration du DHCP en automatique 
+Configuration du DHCP en automatique.
 
 Fichier 1
 
 3.11
 
-source : 00:50:79:66:68:00 - PC1
+Source : 00:50:79:66:68:00 (PC1).
 
 3.12
 
-oui, entre le materiel 10.10.4.1 et 10.10.4.2
-protocol utilisé ICMP ( PING) pour verifier que les deux PC communiquent correctement 
+Oui, entre le matériel 10.10.4.1 et 10.10.4.2 (PC1 et PC4). Protocole utilisé : ICMP (PING) pour vérifier que les deux PCs communiquent correctement.
 
 3.13
 
-resquest: PC1 , IP : 10.10.4.1 , mac adress : 00:50:79:66:68:00
-reply : PC4, IP:10.10.4.2  , mac adress: 00:50:79:66:68:03
-
+Request: PC1, IP: 10.10.4.1, Mac Address: 00:50:79:66:68:00
+Reply: PC4, IP: 10.10.4.2, Mac Address: 00:50:79:66:68:03
 3.14
 
-paquet 2: protocole ARP 
-
-ARP, comme Adress Resolution Protocol, permet de faire le lien entre une adresse IP d'une carte réseau et une adresse matérielle dite adresse MAC. Plus précisément, son but est, à partir d'une adresse IP connue d'une machine, obtenir son adresse MAC et ainsi pouvoir envoyer notre trame. ( vu sur google) 
-
+Paquet 2 : Protocole ARP (Address Resolution Protocol).
 
 3.15
 
-role de A et B dans la communication : permettre l'envoi des infos et la traductions de celles ci , à savoir lecture des adresses IP , traduction de l'IP en adresse mac, etablissement de la communication entre les differents equipements
+Rôle de A et B dans la communication : permettre l'envoi des informations et la traduction de celles-ci, à savoir lecture des adresses IP, traduction de l'IP en adresse MAC, établissement de la communication entre les différents équipements.
 
-fichier 2: 
+Fichier 2
 
 3.16
 
-initialisation de la communication PC2
-IP : 10.11.80.2
+Initialisation de la communication depuis PC2, IP: 10.11.80.2.
 
 3.17
 
-protocole ICMP ( PING ) , il verifie que les machines communiquent entre elles
-
+Protocole ICMP (PING) pour vérifier que les machines communiquent entre elles.
 
 3.18
 
-non , message d'erreur : unreachable ( inaccessible) 
-
-10.11.80.2 et 10.10.80.3 ( PC3) tiennent pas au mm reseau , pour que les machines communiquent entre elles il est necessaire de configurer une paserelle avec une adresse IP appartenant au mm reseau que le PC initialisant la requete . Le materiel B pouvant servir de passerelle et donc permettre à 2 PC n 'apartenant pas au mm reseau de communiquer ayant sa passerelle avec une IP appartenant à un resau different de celui qui initialise la requete, la communication est donc impossible 
+Non, message d'erreur : "unreachable" (inaccessible). Les adresses 10.11.80.2 et 10.10.80.3 (PC3) n'appartiennent pas au même réseau. Pour que les machines communiquent entre elles, il est nécessaire de configurer une passerelle avec une adresse IP appartenant au même réseau que le PC initialisant la requête. Le matériel B pouvant servir de passerelle et donc permettre à deux PCs n'appartenant pas au même réseau de communiquer, ayant sa passerelle avec une IP appartenant à un réseau différent de celui qui initialise la requête, la communication est donc impossible.
 
 3.19
 
-hote inaccessible , la requete n a pas abouti
+Hôte inaccessible, la requête n'a pas abouti.
 
 3.20
 
-faire communiquer les 2 hotes
+Faire communiquer les deux hôtes.
 
-fichier3 
+Fichier 3
 
 3.21
 
-
-IP source 10.10.4.2 - PC4 
-IP destination : 172.16.5.253 - Internet
-
+IP source: 10.10.4.2 (PC4)
+IP destination: 172.16.5.253 (Internet)
 3.22
 
-mac source : ca:01:da:d2:00:1c
-mac destination : ca:03:9e:ef:00:38
-
+Mac source: ca:01:da:d2:00:1c
+Mac destination: ca:03:9e:ef:00:38
 3.23
-
-
-
